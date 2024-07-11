@@ -32,4 +32,20 @@ function myValidationFunction() {
     return true;
 }
 
+function search() {
+    alert("in");
+    var apiUrl = "http://localhost:8080/text-templates/formSearch?pageNumber=1&limitNumberOfPage=5";
+    $.ajax({
+        url: apiUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log("ss" + data);
+        },
+        error: function (data) {
+            console.log( "FL");
+            console.log(data);
+        }
+    })
+};
 

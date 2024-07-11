@@ -30,6 +30,35 @@
             </pre>
         </div>
     </div>
+
+    <input type="button" class="btn btn-success" value="Tìm kiếm đồ uống..." onclick="search();">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>tên</th>
+            <th>giá</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="doUong: ${doUongs}">
+                <td th:text="${doUong.id}" />
+                <td th:text="${doUong.ten}" />
+                <td th:text="${doUong.gia}" />
+            </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
 </th:block>
 
 </body>

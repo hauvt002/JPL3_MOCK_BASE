@@ -1,18 +1,21 @@
 package pl.codeleak.demos.sbt.thymeleaf;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
+import pl.codeleak.demos.sbt.entity.DoUong;
+import pl.codeleak.demos.sbt.service.HomeService;
+
+import java.util.List;
 
 /**
  * Using text templates with Thymeleaf.
@@ -22,6 +25,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Controller
 @RequestMapping("/text-templates")
 public class ThymeleafTextTemplates {
+    @Autowired
+    HomeService homeService;
 
     private TemplateEngine textTemplateEngine;
 
@@ -31,10 +36,10 @@ public class ThymeleafTextTemplates {
 
     @GetMapping("/form")
     public String form(Model model) {
+        model.addAttribute("doUongs", null);
         model.addAttribute(new Form());
         return "th-form";
     }
-
     @PostMapping("/form")
     public String postForm(@ModelAttribute Form form, Model model) {
 
@@ -49,6 +54,16 @@ public class ThymeleafTextTemplates {
 
         return "th-form";
     }
+
+    @GetMapping("/formSearch")
+        public String formSearch(Model model, @RequestParam Integer pageNumber, @RequestParam Integer limitNumberOfPage) {
+        model.addAttribute(new Form());
+        Page<DoUong> doUongs = homeService.getDoUongs(pageNumber,limitNumberOfPage);
+        model.addAttribute("doUongs", doUongs);
+        return "th-form";
+    }
+
+
 
     @Configuration
     public static class ThymeleafConfig {
