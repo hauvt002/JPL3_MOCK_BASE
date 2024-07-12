@@ -1,9 +1,13 @@
 package pl.codeleak.demos.sbt.thymeleaf;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +16,16 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
+import pl.codeleak.demos.sbt.dto.request.DoUongRequest;
+import pl.codeleak.demos.sbt.dto.request.PageableDTO;
 import pl.codeleak.demos.sbt.entity.DoUong;
 import pl.codeleak.demos.sbt.service.HomeService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Using text templates with Thymeleaf.
@@ -36,34 +46,50 @@ public class ThymeleafTextTemplates {
 
     @GetMapping("/form")
     public String form(Model model) {
-        model.addAttribute("doUongs", null);
+        List<String> list = Collections.emptyList();
+        Page<String> page = new PageImpl<>(list);
+        model.addAttribute("DoUongPage",  page);
+        model.addAttribute("pageNumbers", 0);
         model.addAttribute(new Form());
         return "th-form";
     }
-    @PostMapping("/form")
+    @PostMapping("/save")
     public String postForm(@ModelAttribute Form form, Model model) {
 
-        Context context = new Context();
-        context.setVariable("name", form.getName());
-        context.setVariable("url", form.getUrl());
-        context.setVariable("tags", form.getTags().split(" "));
+//        Context context = new Context();
+        DoUongRequest doUongRequest = new DoUongRequest();
+        doUongRequest.setProductName(form.getName());
+        doUongRequest.setPrice(form.getPrice());
+        homeService.SaveDoUong(doUongRequest);
 
-        String text = textTemplateEngine.process("text-template", context);
-
-        model.addAttribute("text", text);
-
-        return "th-form";
-    }
-
-    @GetMapping("/formSearch")
-        public String formSearch(Model model, @RequestParam Integer pageNumber, @RequestParam Integer limitNumberOfPage) {
-        model.addAttribute(new Form());
-        Page<DoUong> doUongs = homeService.getDoUongs(pageNumber,limitNumberOfPage);
-        model.addAttribute("doUongs", doUongs);
-        return "th-form";
+        return "redirect:/text-templates/formSearch";
     }
 
 
+
+    @GetMapping(value = "/formSearch")
+    public String listBooks(
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);//cho nay co nghia la neu  null thi mac dinh se la 1
+        int pageSize = size.orElse(5);//cho nay co nghia la neu  null thi mac dinh se la 5
+
+        PageableDTO pageableDTO = new PageableDTO(currentPage-1, pageSize);
+        Page<DoUong> doUongPage = homeService.findPaginated(pageableDTO);
+
+        model.addAttribute("DoUongPage", doUongPage);
+
+        int totalPages = doUongPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "th-form";
+    }
 
     @Configuration
     public static class ThymeleafConfig {
@@ -87,34 +113,13 @@ public class ThymeleafTextTemplates {
         }
     }
 
+    @Data
+    @NoArgsConstructor
     public static class Form {
         private String name = "spring.io";
         private String url = "http://spring.io";
         private String tags = "#spring #framework #java";
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getTags() {
-            return tags;
-        }
-
-        public void setTags(String tags) {
-            this.tags = tags;
-        }
+        private Float price = 0f;
     }
 
 }

@@ -13,13 +13,9 @@ import java.util.Optional;
 @Repository
 public interface DoUongRepo extends JpaRepository<DoUong,Long> {
 
-    String findTenById(Long id);
 
     @Override
     long count();
-
-    @Override
-    Page<DoUong> findAll(Pageable pageable);
 
     @Query(value = "select  n from DoUong n ")
     List<DoUong> getListDoUong();

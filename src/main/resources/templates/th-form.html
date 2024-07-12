@@ -7,20 +7,21 @@
 <th:block layout:fragment="content">
     <div class="row">
         <div class="col-md-6">
-            <form name="myForm" role="form" th:action="@{/text-templates/form}" th:object="${form}" th:method="post" th:onsubmit="return myValidationFunction()">
+            <form name="myForm" role="form" th:action="@{/text-templates/save}" th:object="${form}" th:method="post" th:onsubmit="return myValidationFunction()">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Product name</label>
                     <input type="text" id="name"  name="name" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="url">Url</label>
-                    <input type="url" id="url" th:value="*{url}" name="url" class="form-control">
+                    <label for="price">Price</label>
+                    <input type="number" id="price"  step="any" name="price" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="tags">Tags (e.g. #tag1 #tag2 #tag3)</label>
-                    <input type="text" id="tags" th:value="*{tags}" name="tags" class="form-control">
-                </div>
-                <input type="submit" class="btn btn-success" value="Process">
+<!--                <div class="form-group">-->
+<!--                    <label for="tags">Tags (e.g. #tag1 #tag2 #tag3)</label>-->
+<!--                    <input type="text" id="tags"  name="tags" class="form-control">-->
+<!--                </div>-->
+                <input type="submit" class="btn btn-success" value="Add new">
+                <a th:href="@{/text-templates/formSearch}" ><input type="button" class="btn btn-success" value="Find" ></a>
             </form>
         </div>
         <div class="col-md-6">
@@ -29,34 +30,47 @@
                 Demo
             </pre>
         </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>tên</th>
+                <th>giá</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:if="${DoUongPage.content!=null}">
+                <tr th:each="doUong, iStat : ${DoUongPage.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td th:text="${doUong.id}" />
+                    <td th:text="${doUong.ten}" />
+                    <td th:text="${doUong.gia}" />
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <div th:if="${DoUongPage.totalPages > 0}" class="pagination"
+                     th:each="pageNumber : ${pageNumbers}">
+                    <li class="page-item">
+                        <a th:href="@{/text-templates/formSearch(size=${DoUongPage.size}, page=${pageNumber})}"
+                           th:text=${pageNumber} th:class="${pageNumber==DoUongPage.number + 1} ? active">
+
+                        </a>
+                    </li>
+                    <li class="page-item">
+                    </li>
+                </div>
+            </ul>
+        </nav>
     </div>
 
-    <input type="button" class="btn btn-success" value="Tìm kiếm đồ uống..." onclick="search();">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>tên</th>
-            <th>giá</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="doUong: ${doUongs}">
-                <td th:text="${doUong.id}" />
-                <td th:text="${doUong.ten}" />
-                <td th:text="${doUong.gia}" />
-            </tr>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
+
 
 
 </th:block>
