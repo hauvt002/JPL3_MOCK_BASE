@@ -1,6 +1,5 @@
 package pl.codeleak.demos.sbt.service;
 
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class HomeServiceIMPL implements HomeService{
+public class HomeServiceImpl implements HomeService{
     @Autowired
     DoUongRepo doUongRepo;
 
