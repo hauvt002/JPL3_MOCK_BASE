@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/excel")
+@RequestMapping("/admin/api/excel")
 public class ExcelController {
     @Autowired
     ExcelService excelService;
