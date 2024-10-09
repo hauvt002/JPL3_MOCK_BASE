@@ -1,4 +1,4 @@
-package pl.codeleak.demos.sbt.home;
+package pl.codeleak.demos.sbt.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import pl.codeleak.demos.sbt.service.FileStorageService;
 
-import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 

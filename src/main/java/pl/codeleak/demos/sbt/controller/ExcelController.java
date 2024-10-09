@@ -1,4 +1,4 @@
-package pl.codeleak.demos.sbt.home;
+package pl.codeleak.demos.sbt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

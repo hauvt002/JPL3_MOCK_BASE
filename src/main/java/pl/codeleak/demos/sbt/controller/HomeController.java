@@ -1,4 +1,4 @@
-package pl.codeleak.demos.sbt.home;
+package pl.codeleak.demos.sbt.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
