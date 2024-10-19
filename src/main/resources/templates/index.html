@@ -10,7 +10,7 @@
         <h1>Logged user: <span sec:authentication="name" /></h1>
         <p>
             Welcome to the Spring Boot Thymeleaf Application! The time is: <strong
-                th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}">31/12/2015 15:00</strong>
+                th:text="${#temporals.format(now, 'dd/MMM/yyyy HH:mm')}"></strong>
         </p>
         <p>
             <a href="#" th:href="@{properties}" class="btn btn-large btn-success">Check System Properties</a>

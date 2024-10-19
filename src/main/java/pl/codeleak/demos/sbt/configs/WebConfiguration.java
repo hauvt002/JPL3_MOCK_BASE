@@ -49,7 +49,7 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/product/delete/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()
+                .formLogin().loginPage("/login").permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
